@@ -2,7 +2,7 @@ package Mensola;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
 
 public class Libro {
 
@@ -14,11 +14,11 @@ public class Libro {
     public LocalDate dataPubblicazione;
     final private DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public static boolean Equals (Libro libro, Libro[] mensola, int contatore)
+    public static boolean Equals (Libro libro, ArrayList<Libro> mensola)
     {
-        if (contatore != 0) {
-            for (int i = 0; i < contatore; i++) {
-                if (libro.autore.equals(mensola[i].autore) && libro.titolo.equals(mensola[i].titolo)) {
+        if (!mensola.isEmpty()) {
+            for (Libro value : mensola) {
+                if (value.autore.equalsIgnoreCase(libro.autore) && value.titolo.equalsIgnoreCase(libro.titolo)) {
                     return true;
                 }
             }
@@ -26,18 +26,14 @@ public class Libro {
         return false;
 
     }
-
-    public static boolean DataAccettabile(Date dataInserita)
+    public static boolean DataAccettabile(LocalDate dataInserita)
     {
         LocalDate dataOggi = LocalDate.now();
-        if (dataInserita.getYear() > dataOggi.getYear())
-        {
-            return false;
-        }
-        return true;
+        return dataInserita.getYear() <= dataOggi.getYear();
     }
     public String FormattaDati()
     {
         return String.format("autore: %s , titolo: %s , Prezzo: %.2f, Pagine: %d, Tipologia: %s, Data: %s", autore, titolo, PrezzoPerPagine * pagine, pagine, tipologia, dataPubblicazione.format(dataFormat));
     }
+
 }
