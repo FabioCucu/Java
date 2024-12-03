@@ -1,7 +1,6 @@
 import static Utility.Tools.*;
-
 import Mensola.Libro;
-import Screen.frontEnd;
+import Screen.FrontEnd;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,7 +16,7 @@ public class Main {
 
         ArrayList<Libro> mensola = new ArrayList<>();
         ArrayList<Libro> libriRicercati;
-        String[] opzioni = {"==============\nMenù\n==============","Inserimento","Visualizza", "Find All", "Remove", "Remove All", "Modifica libro", "Fine"};
+        String[] opzioni = {"==============\nMenù\n==============","Inserimento","Visualizza", "Find All", "Remove", "Remove All", "Modifica libro", "Sort List", "Scorrimento", "Fine"};
 
         do {
             switch (Menu(opzioni, tastiera)) {
@@ -27,7 +26,7 @@ public class Main {
                     System.out.println("Inserimento.");
                     if (mensola.size() < MAXLIBRI) {
                         try {
-                            mensola.add(frontEnd.AddLibro(mensola));
+                            mensola.add(FrontEnd.AddLibro(mensola));
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
@@ -49,12 +48,12 @@ public class Main {
                 case 3 ->{
 
                     if (!mensola.isEmpty()) {
-                        System.out.println("Ricerca.");
+                        System.out.println("Find All.");
                         System.out.println("Inserisci il titolo del libro che vuoi ricercare.");
                         ricercaTitolo = tastiera.nextLine();
-                        try {
-
-                            libriRicercati = frontEnd.FindAll(mensola, ricercaTitolo, mensola.size());
+                        try
+                        {
+                            libriRicercati = FrontEnd.FindAll(mensola, ricercaTitolo);
                             if (!libriRicercati.isEmpty())
                             {
                                 libriRicercati.forEach(m-> System.out.println(m.FormattaDati()));
@@ -84,7 +83,7 @@ public class Main {
                         ricercaAutore = tastiera.nextLine();
                         System.out.println("Inserisci il titolo del libro che vuoi ricercare.");
                         ricercaTitolo = tastiera.nextLine();
-                        frontEnd.Remove(mensola, ricercaAutore, ricercaTitolo);
+                        FrontEnd.Remove(mensola, ricercaAutore, ricercaTitolo);
                         System.out.println("Cancellazione eseguita.");
                     }
                     else
@@ -99,7 +98,7 @@ public class Main {
                         System.out.println("Remove all.");
                         System.out.println("Inserisci l'autore del libro che vuoi ricercare.");
                         ricercaAutore = tastiera.nextLine();
-                        frontEnd.RemoveAll(mensola, ricercaAutore);
+                        FrontEnd.RemoveAll(mensola, ricercaAutore);
                         System.out.println("Cancellazione eseguita.");}
                     else
                     {
@@ -116,7 +115,7 @@ public class Main {
                         ricercaAutore = tastiera.nextLine();
                         System.out.println("Inserisci il titolo del libro che vuoi ricercare.");
                         ricercaTitolo = tastiera.nextLine();
-                        frontEnd.ModificaLibro(mensola, ricercaAutore, ricercaTitolo);
+                        FrontEnd.ModificaLibro(mensola, ricercaAutore, ricercaTitolo);
                     }
                     else
                     {
@@ -125,6 +124,22 @@ public class Main {
                 }
 
                 case 7 -> {
+                    if (!mensola.isEmpty()) {
+                        System.out.println("Sort List.");
+                        FrontEnd.SortArrayList(mensola, tastiera);
+                    }
+                    else
+                    {
+                        System.out.println("Devi inserire almeno un libro.");
+                    }
+                }
+
+                case 8 -> {
+
+                    FrontEnd.Scorrimento(mensola);
+                }
+
+                case 9 -> {
 
                     System.out.println("Fine programma.");
                     esci = true;
@@ -132,6 +147,9 @@ public class Main {
 
                 default ->  System.out.println("Opzione non valida.");
             }
+
+            clrScr();
+
         }while (!esci);
     }
 }
